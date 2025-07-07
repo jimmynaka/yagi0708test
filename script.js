@@ -15,23 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // ステップのアコーディオン機能 (steps.html)
-    const steps = document.querySelectorAll('.step');
-    if (steps.length > 0) {
-        steps.forEach(step => {
-            step.addEventListener('click', () => {
-                // 他のステップを閉じる
-                steps.forEach(s => {
-                    if (s !== step) {
-                        s.classList.remove('active');
-                    }
-                });
-                // クリックしたステップを開閉する
-                step.classList.toggle('active');
-            });
-        });
-    }
-
     // クイズ機能 (quiz.html)
     const quizArea = document.getElementById('quiz-area');
     if (quizArea) {
@@ -89,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedOption = e.target;
             const answer = quizData[currentQuestionIndex].answer;
 
-            // 回答後の再クリックを無効化
             const allOptions = questionContainer.querySelectorAll('.options li');
             allOptions.forEach(opt => opt.style.pointerEvents = 'none');
 
@@ -98,14 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 score++;
             } else {
                 selectedOption.classList.add('incorrect');
-                // 正解を表示
                 allOptions.forEach(opt => {
                     if (opt.textContent === answer) {
                         opt.classList.add('correct');
                     }
                 });
             }
-            nextBtn.style.display = 'block';
+            nextBtn.style.display = 'inline-block';
         }
 
         function showNextQuestion() {
@@ -125,16 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
             let message = '';
 
             if (percentage === 100) {
-                message = `<h2>全問正解！素晴らしい！</h2><p>あなたには新しい時代をリードする資質があります。その深い理解力で、豊かさを引き寄せていきましょう。</p>`;
+                message = `<h2><i class="fa-solid fa-crown"></i> 全問正解！素晴らしい！</h2><p>あなたには新しい時代をリードする資質があります。その深い理解力で、豊かさを引き寄せていきましょう。</p>`;
                 resultContainer.className = 'success';
             } else if (percentage >= 60) {
-                message = `<h2>合格です！</h2><p>よく理解できていますね。この調子で学びを深め、新しい時代の波に乗っていきましょう。</p>`;
+                message = `<h2><i class="fa-solid fa-star"></i> 合格です！</h2><p>よく理解できていますね。この調子で学びを深め、新しい時代の波に乗っていきましょう。</p>`;
                 resultContainer.className = 'success';
             } else {
-                message = `<h2>もう一歩！</h2><p>少し難しかったかもしれません。もう一度コンテンツを見直して、再挑戦してみてくださいね！</p>`;
+                message = `<h2><i class="fa-solid fa-rotate-right"></i> もう一歩！</h2><p>少し難しかったかもしれません。もう一度コンテンツを見直して、再挑戦してみてくださいね！</p>`;
                 resultContainer.className = 'failure';
             }
-            resultContainer.innerHTML = `${message}<p>あなたのスコア: ${score} / ${quizData.length}</p>`;
+            resultContainer.innerHTML = `${message}<p>あなたのスコア: ${score} / ${quizData.length}</p><a href="quiz.html" class="btn-cta" style="margin-top: 20px; background-color: #1a73e8;">もう一度挑戦する</a>`;
         }
 
         nextBtn.addEventListener('click', showNextQuestion);
